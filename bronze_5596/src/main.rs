@@ -1,22 +1,39 @@
-use std;
+use std::{cmp, io, io::prelude::*};
+pub type Error = Box<dyn std::error::Error + Send + Sync>;
+pub type Result<T> = std::result::Result<T, Error>;
 
-fn read_from_stdin() -> String {
-    let mut line = String::new();
-    let stdin = std::io::stdin();
-    let res = stdin.read_line(&mut line);
-    match res {
-        Ok(_) => return line,
-        Err(_) => return String::from(r#"error occured"#)
-    }
+
+pub fn parse(line: String) -> i32 {
+    line.trim()
+    .split_whitespace()
+    .map(|num| num.parse::<i32>().unwrap())
+    .reduce(|a, b| a + b)
+    .unwrap()
 }
 
-fn main() {
-    let line = read_from_stdin();
-    let result = line.trim()
-        .split_whitespace()
-        .map(|num| num.parse::<f64>().unwrap())
-        .reduce(|a, b| a + b)
-        .unwrap();
-    
-    println!("{}", result);
+
+pub fn main() -> Result<()> {
+    // line 1
+    let mut res = -1;
+    for _ in 0..2 {
+        let mut line = String::new();
+        std::io::stdin().read_line(&mut line).unwrap();
+        let score = parse(line);
+        res = cmp::max(res, score);
+    }
+
+    println!("{}", res);
+    Ok(())
+}
+
+pub fn __main() -> Result<()> {
+    let mut res = 0;
+    for line in io::stdin().lock().lines() {
+        let score = parse(line?);
+        if score > res {
+            res = score;
+        }
+    }
+    println!("{}", res);
+    Ok(())
 }
