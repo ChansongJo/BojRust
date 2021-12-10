@@ -17,7 +17,7 @@ pub fn main() -> Result<()> {
     let mut res = -1;
     for _ in 0..2 {
         let mut line = String::new();
-        std::io::stdin().read_line(&mut line).unwrap();
+        io::stdin().read_line(&mut line).unwrap();
         let score = parse(line);
         res = cmp::max(res, score);
     }
