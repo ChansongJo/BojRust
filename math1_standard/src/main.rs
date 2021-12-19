@@ -220,28 +220,13 @@ fn fly_me_to_the_alpha_centauri() {
     for _ in 0.._n {
         let [a, b] = parse_line!(2, f64);
         let distance = b - a;
-
-        // n(n+1) + n(n-1)
-        // n^2...
-        
-        // 3 -> 3
-        // how? : 1, 1, 1
-        // 4 -> 3
-        // how? : 1, 2, 1 
-        // 5 -> 4
-        // how?: 1, 2, 1, 1
-
-        // 6 -> 4
-        // how?: 1, 2, 2, 1
-
-        // 7 -> 5
-        // how?: 1, 2, 3, 2, 1 => 2 * (2 ** 2)
-        // 4(2) -> 3
-        // 9(3) -> 5
-        // 16(4) -> 7 1, 2, 3, 4, 3, 2, 1
-
-        let res = distance.sqrt() + 1.0;
-        println!("{}", res as u32);
+        let n = distance.sqrt().floor() as u32;
+        let flag = distance as u32 > n.pow(2) + n;
+        match ((distance as u32) == n.pow(2), flag) {
+            (true, _) => println!("{}", 2 * n - 1),
+            (_, false) => println!("{}", 2 * n),
+            (_, true) => println!("{}", 2 * n + 1),
+        }
     }
 
 }
